@@ -97,8 +97,6 @@ Parse .csv files and keep regions and employees data in memory to quickly build 
 
 Arseniy - driars0329@gmail.com
 
-Project Link: [https://github.com/driars/books-list](https://github.com/driars/books-list)
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
