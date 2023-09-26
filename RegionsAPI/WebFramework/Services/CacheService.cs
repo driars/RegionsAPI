@@ -24,5 +24,23 @@ namespace WebFramework.Services
         public TDto Get(Int32 id) => _cache[id];
 
         public IEnumerable<TDto> GetAll() => _cache.Values;
+
+        public async Task SaveToDatabase(ApplicationDbContext context, DbSet<TEntity> dbSet, IMapper mapper)
+        {
+            try
+            {
+                var items = GetAll();
+
+                foreach (var item in items)
+                {
+                    TEntity entity = mapper.Map<TEntity>(item);
+                    dbSet.Add(entity);
+                }
+
+                await context.SaveChangesAsync();
+            }
+            catch (Exception) { }
+
+        }
     }
 }

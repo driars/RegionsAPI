@@ -41,6 +41,8 @@ builder.Services.AddLogging(loggingBuilder =>
     loggingBuilder.AddSerilog(logger);
 });
 
+builder.Services.AddHostedService<SaveBackgroundService>();
+
 var app = builder.Build();
 
 app.Services.SeedData(builder.Services, logger);
