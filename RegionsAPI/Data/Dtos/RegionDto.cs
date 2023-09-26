@@ -13,4 +13,10 @@ namespace Data.Dtos
         public string Name { get; set; } = "";
         public int? ParentId { get; set; }
     }
+
+    public class RegionSelectDto : BaseDto
+    {
+        public string Name { get; set; } = "";
+        public string? ParentName { get; set; } = "";
+    }
 }

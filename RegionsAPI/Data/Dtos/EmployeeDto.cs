@@ -12,4 +12,11 @@ namespace Data.Dtos
         public string SurName { get; set; } = "";
         public int RegionId { get; set; }
     }
+
+    public class EmployeeSelectDto
+    {
+        public string Name { get; set; } = "";
+        public string SurName { get; set; } = "";
+        public string RegionName { get; set; } = "";
+    }
 }
