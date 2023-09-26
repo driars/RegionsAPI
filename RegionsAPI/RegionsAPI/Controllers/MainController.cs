@@ -34,9 +34,12 @@ namespace RegionsAPI.Controllers
         [HttpGet("region/{id}/employees")]
         public async Task<ActionResult<IEnumerable<EmployeeSelectDto>>> GetEmployeesByRegion(int id)
         {
-            if (_context.Regions.Any()) { }
-
             IEnumerable<RegionDto> regions = _regionCache.GetAll();
+
+            if (_context.Regions.Any())
+            {
+                regions = _context.Regions.AsNoTracking().ProjectTo<RegionDto>(_mapper.ConfigurationProvider);
+            }
 
             var item = regions.FirstOrDefault(e => e.Id == id);
             if (item == null) return NotFound();
@@ -60,6 +63,12 @@ namespace RegionsAPI.Controllers
                 }
             }
 
+            if (_context.Employees.Any())
+            {
+                return await _context.Employees.AsNoTracking().Where(e => ids.Contains(e.Id)).
+                    ProjectTo<EmployeeSelectDto>(_mapper.ConfigurationProvider).ToListAsync();
+            }
+
             return Ok(_employeeCache.GetAll().Where(e => ids.Contains(e.RegionId)).Select(e => new EmployeeSelectDto
             {
                 Name = e.Name,
@@ -72,7 +81,9 @@ namespace RegionsAPI.Controllers
         [HttpGet("regions")]
         public async Task<ActionResult<IEnumerable<RegionSelectDto>>> GetRegions()
         {
-            if (_context.Regions.Any()) { }
+            if (_context.Regions.Any()) {
+                return await _context.Regions.AsNoTracking().ProjectTo<RegionSelectDto>(_mapper.ConfigurationProvider).ToListAsync();
+            }
 
             var regions = _regionCache.GetAll();
 
@@ -87,7 +98,10 @@ namespace RegionsAPI.Controllers
         [HttpGet("employees")]
         public async Task<ActionResult<IEnumerable<EmployeeSelectDto>>> GetEmployees()
         {
-            if (_context.Employees.Any()) { }
+            if (_context.Employees.Any())
+            {
+                return await _context.Employees.AsNoTracking().ProjectTo<EmployeeSelectDto>(_mapper.ConfigurationProvider).ToListAsync();
+            }
 
             var employees = _employeeCache.GetAll();
 

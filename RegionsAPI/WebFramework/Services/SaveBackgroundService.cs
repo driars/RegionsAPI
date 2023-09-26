@@ -25,7 +25,7 @@ namespace WebFramework.Services
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken); // Run after 5 minutes
+                // await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken); // Run after 5 minutes
 
                 using (var scope = _provider.CreateScope())
                 {
