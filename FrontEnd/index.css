@@ -1,0 +1,29 @@
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td,
+th {
+    border: 1px solid black;
+    text-align: left;
+    padding: 20px;
+}
+
+.container {
+    padding: 2rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.table-container {
+    flex: 1;
+}
+
+.table-label {
+    font-size: 23px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 2rem;
+}
