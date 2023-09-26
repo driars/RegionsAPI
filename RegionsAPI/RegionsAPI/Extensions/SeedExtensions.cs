@@ -27,7 +27,11 @@ namespace WebFramework.Extensions
 
                     new RegionsSeeder(context,
                         provider.GetRequiredService<CacheService<RegionDto, Region>>(),
-                        rootPath).Seed();
+                        rootPath, logger).Seed();
+
+                    new EmployeesSeeder(context,
+                        provider.GetRequiredService<CacheService<EmployeeDto, Employee>>(),
+                        rootPath, logger).Seed();
                 }
                 catch (Exception ex)
                 {

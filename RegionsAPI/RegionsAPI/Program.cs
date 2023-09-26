@@ -29,6 +29,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.InitializeAutoMapper();
 
 builder.Services.AddSingleton<CacheService<RegionDto, Region>>();
+builder.Services.AddSingleton<CacheService<EmployeeDto, Employee>>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

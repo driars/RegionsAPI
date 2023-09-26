@@ -11,14 +11,14 @@ using WebFramework.Services;
 
 namespace WebFramework.Seeders
 {
-    public class RegionsSeeder
+    public class EmployeesSeeder
     {
         private readonly ApplicationDbContext _context;
         private readonly String _rootPath;
-        private readonly CacheService<RegionDto, Region> _cacheService;
+        private readonly CacheService<EmployeeDto, Employee> _cacheService;
         private readonly Serilog.ILogger _logger;
 
-        public RegionsSeeder(ApplicationDbContext context, CacheService<RegionDto, Region> cacheService, string rootPath, Serilog.ILogger logger)
+        public EmployeesSeeder(ApplicationDbContext context, CacheService<EmployeeDto, Employee> cacheService, string rootPath, Serilog.ILogger logger)
         {
             _context = context;
             _rootPath = rootPath;
@@ -32,7 +32,8 @@ namespace WebFramework.Seeders
 
             try
             {
-                string filePath = Path.GetFullPath(Path.Combine(_rootPath, "../SeedData", "regions.csv"));
+                string filePath = Path.GetFullPath(Path.Combine(_rootPath, "../SeedData", "employees.csv"));
+                int id = 1;
 
                 using (TextFieldParser parser = new TextFieldParser(filePath))
                 {
@@ -42,17 +43,13 @@ namespace WebFramework.Seeders
                     while (!parser.EndOfData)
                     {
                         string[] fields = parser.ReadFields()!;
-                        RegionDto region = new RegionDto();
+                        EmployeeDto employee = new EmployeeDto();
 
-                        region.Id = Int32.Parse(fields[1]);
-                        region.Name = fields[0];
+                        employee.Name = fields[1];
+                        employee.SurName = fields[2];
+                        employee.RegionId = Int32.Parse(fields[0]);
 
-                        if (!String.IsNullOrEmpty(fields[2]))
-                        {
-                            region.ParentId = Int32.Parse(fields[2]);
-                        }
-
-                        _cacheService.Set(region.Id, region);
+                        _cacheService.Set(id++, employee);
                     }
                 }
             }
