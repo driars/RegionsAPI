@@ -65,7 +65,7 @@ namespace RegionsAPI.Controllers
 
             if (_context.Employees.Any())
             {
-                return await _context.Employees.AsNoTracking().Where(e => ids.Contains(e.Id)).
+                return await _context.Employees.AsNoTracking().Where(e => ids.Contains(e.RegionId)).
                     ProjectTo<EmployeeSelectDto>(_mapper.ConfigurationProvider).ToListAsync();
             }
 
@@ -111,6 +111,46 @@ namespace RegionsAPI.Controllers
                 SurName = e.SurName,
                 RegionName = _regionCache.Get(e.RegionId).Name
             }));
+        }
+
+        [HttpPost("region")]
+        public async Task<IActionResult> Post([FromBody] RegionDto regionDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Region region = _mapper.Map<Region>(regionDto);
+
+            if (!_context.Regions.Any())
+                await new SaveDataService(_context, _mapper, _regionCache, _employeeCache).SaveAsync();
+
+            region.Id = _context.Regions.Max(e => e.Id) + 1;
+
+            _context.Regions.Add(region);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(null, region);
+        }
+
+        [HttpPost("employee")]
+        public async Task<IActionResult> Post([FromBody] EmployeeDto employeeDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Employee employee = _mapper.Map<Employee>(employeeDto);
+
+            if (!_context.Employees.Any())
+                await new SaveDataService(_context, _mapper, _regionCache, _employeeCache).SaveAsync();
+
+            _context.Employees.Add(employee);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(null, employee);
         }
     }
 }
