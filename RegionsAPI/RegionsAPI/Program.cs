@@ -1,6 +1,11 @@
 using Data;
+using Data.Dtos;
+using Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using RegionsAPI.Extensions;
 using Serilog;
+using WebFramework.Extensions;
+using WebFramework.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +26,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
     options.UseSqlServer(connectionString);
 });
+builder.Services.InitializeAutoMapper();
+
+builder.Services.AddSingleton<CacheService<RegionDto, Region>>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -33,6 +41,8 @@ builder.Services.AddLogging(loggingBuilder =>
 });
 
 var app = builder.Build();
+
+app.Services.SeedData(builder.Services, logger);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
